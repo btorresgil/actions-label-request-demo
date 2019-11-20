@@ -14,7 +14,7 @@ jobs:
           previews: symmetra
           script: |
             const labels = await github.issues.listLabelsOnIssue({ ...context.issue })
-            console.log(`labels: ${labels}`)
+            console.log(`labels: ${JSON.stringify(labels, null, 2)}`)
             const partnerLabelExists = labels.reduce((exists, label) => (
               exists ? true : label.startsWith('partner:')
             ), false)

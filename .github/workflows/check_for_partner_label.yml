@@ -17,7 +17,7 @@ jobs:
             const partnerLabelExists = labels.reduce((exists, label) => (
               exists ? true : label.startsWith('partner:')
             ), false)
-            console.log(`context: ${JSON.stringify(context, null, 2}`)
+            console.log(`context: ${JSON.stringify(context, null, 2)}`)
             console.log(`partnerLabelExists ${partnerLabelExists}`)
             if (!partnerLabelExists) {
               github.issues.createComment({

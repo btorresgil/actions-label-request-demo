@@ -1,8 +1,10 @@
-name: Label request
-on: pull_request
+name: Check labels
+on:
+  pull_request:
+    types: [opened]
 
 jobs:
-  request-label:
+  partner-label:
 
     runs-on: ubuntu-latest
 
@@ -11,18 +13,18 @@ jobs:
         uses: actions/github-script@0.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          previews: symmetra
           script: |
-            const labels = await github.issues.listLabelsOnIssue({ ...context.issue })
-            console.log(`labels: ${JSON.stringify(labels, null, 2)}`)
-            const partnerLabelExists = labels.data.reduce((exists, label) => (
-              exists ? true : label.name.startsWith('partner:')
-            ), false)
-            console.log(`context: ${JSON.stringify(context, null, 2)}`)
+            const partnerLabelExists = context.payload.pull_request.labels.reduce(
+              (exists, label) => (exists ? true : label.name.startsWith('partner:')),
+              false,
+            )
             console.log(`partnerLabelExists ${partnerLabelExists}`)
             if (!partnerLabelExists) {
               await github.issues.createComment({
                 ...context.issue,
-                body: 'Thanks for the contribution! To help us track and review this PR, **please assign a `partner:` label**. Thanks!'
+                body:
+                  `Thanks for the contribution, @${context.payload.pull_request.actor}!
+
+                  To help us track and review this PR, **please assign a \`partner:\` label**, thanks!`,
               })
             }

@@ -23,8 +23,7 @@ jobs:
               await github.issues.createComment({
                 ...context.issue,
                 body:
-                  `Thanks for the contribution, @${context.payload.pull_request.actor}!
-
-                  To help us track and review this PR, **please assign a \`partner:\` label**, thanks!`,
+                  `Thanks for the contribution, @${context.payload.pull_request.user.login}!\n\n` +
+                  'To help us track and review this PR, **please assign a `partner:` label**, thanks!',
               })
             }

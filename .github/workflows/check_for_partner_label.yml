@@ -13,7 +13,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           previews: symmetra
           script: |
-            const labels = github.issues.listLabelsOnIssue({ ...context.issue })
+            const labels = await github.issues.listLabelsOnIssue({ ...context.issue })
             console.log(`labels: ${labels}`)
             const partnerLabelExists = labels.reduce((exists, label) => (
               exists ? true : label.startsWith('partner:')
@@ -21,7 +21,7 @@ jobs:
             console.log(`context: ${JSON.stringify(context, null, 2)}`)
             console.log(`partnerLabelExists ${partnerLabelExists}`)
             if (!partnerLabelExists) {
-              github.issues.createComment({
+              await github.issues.createComment({
                 ...context.issue,
                 body: 'Thanks for the contribution! To help us track and review this PR, **please assign a `partner:` label**. Thanks!'
               })

@@ -15,8 +15,8 @@ jobs:
           script: |
             const labels = await github.issues.listLabelsOnIssue({ ...context.issue })
             console.log(`labels: ${JSON.stringify(labels, null, 2)}`)
-            const partnerLabelExists = labels.reduce((exists, label) => (
-              exists ? true : label.startsWith('partner:')
+            const partnerLabelExists = labels.data.reduce((exists, label) => (
+              exists ? true : label.name.startsWith('partner:')
             ), false)
             console.log(`context: ${JSON.stringify(context, null, 2)}`)
             console.log(`partnerLabelExists ${partnerLabelExists}`)
